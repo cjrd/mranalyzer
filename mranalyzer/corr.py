@@ -1,11 +1,8 @@
 """Perform an exploratory correlation analysis of the input atmospheric data."""
 
-import click
-from mranalyzer.util import (TLD, console, make_dir_if_not_exist, combine_multiple_csvs_to_dataframe, ErrorLogWrapper)
-
 import os
-import time
 import sys
+import time
 from contextlib import redirect_stderr
 from typing import Any
 
@@ -16,6 +13,15 @@ import pandas as pd
 from rich.markdown import Markdown
 from rich.table import Table
 from sklearn import tree
+
+from mranalyzer.util import (
+    TLD,
+    ErrorLogWrapper,
+    combine_multiple_csvs_to_dataframe,
+    console,
+    make_dir_if_not_exist,
+)
+
 
 @click.command()
 @click.option(
@@ -31,7 +37,7 @@ from sklearn import tree
     default=os.path.join(TLD, "data/7500_data.csv"),
     type=click.Path(exists=True),
     show_default=True,
-    help="input atmopheric data"
+    help="input atmopheric data",
 )
 @click.option(
     "--labels",
@@ -39,17 +45,47 @@ from sklearn import tree
     default=os.path.join(TLD, "data/7500_labels.csv"),
     type=click.Path(exists=True),
     show_default=True,
-    help="input atmopheric data labels"
+    help="input atmopheric data labels",
 )
-@click.option("--min_lon", default=30.0, type=float, show_default=True, help="The minimum longitude to include in the analysis")
-@click.option("--max_lon", default=120.0, type=float, show_default=True, help="The maximum longitude to include in the analysis")
-@click.option("--min_lat", default=33.0, type=float, show_default=True, help="The minimum latitude to include in the analysis")
-@click.option("--max_lat", default=80.0, type=float, show_default=True, help="The maximum latitude to include in the analysis")
-@click.option("--random_seed", default=0, type=int, show_default=True, help="The random seed to use for the analysis")
+@click.option(
+    "--min_lon",
+    default=30.0,
+    type=float,
+    show_default=True,
+    help="The minimum longitude to include in the analysis",
+)
+@click.option(
+    "--max_lon",
+    default=120.0,
+    type=float,
+    show_default=True,
+    help="The maximum longitude to include in the analysis",
+)
+@click.option(
+    "--min_lat",
+    default=33.0,
+    type=float,
+    show_default=True,
+    help="The minimum latitude to include in the analysis",
+)
+@click.option(
+    "--max_lat",
+    default=80.0,
+    type=float,
+    show_default=True,
+    help="The maximum latitude to include in the analysis",
+)
+@click.option(
+    "--random_seed",
+    default=0,
+    type=int,
+    show_default=True,
+    help="The random seed to use for the analysis",
+)
 def corr(**kwargs) -> None:
     """
     Perform an exploratory correlation analysis of the input atmospheric data.
-    
+
     Run `mra corr --help` to see all input options.
     """
     startTime = time.time()
@@ -61,7 +97,7 @@ def corr(**kwargs) -> None:
         and redirect_stderr(
             ErrorLogWrapper(
                 console,
-                preamble="Data loading issue (inspect/clean your data at these lines to fix)"
+                preamble="Data loading issue (inspect/clean your data at these lines to fix)",
             )
         )
     ):
@@ -120,8 +156,8 @@ def corr(**kwargs) -> None:
 
     runtime = time.time() - startTime
     console.log(f"Runtime: {runtime:.2f} seconds", style="bold yellow")
-  
-  
+
+
 def run_decision_tree(
     X: pd.DataFrame, y: pd.DataFrame, randomSeed: int = 0
 ) -> tree.DecisionTreeClassifier:
@@ -162,7 +198,8 @@ def plot_decision_tree(model: Any, featureNames: str, outdir: str):
         # a strange permission error results if graphviz is installed via pip instead of conda
         console.print(
             "Unable to render decision tree. Did you install graphviz as follows? "
-            "`conda install --channel conda-forge pygraphviz`", style="red"
+            "`conda install --channel conda-forge pygraphviz`",
+            style="red",
         )
         sys.exit(1)
     console.log(f"Writing decision tree to {outpath} and {outpath}.pdf")

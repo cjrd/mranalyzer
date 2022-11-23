@@ -1,18 +1,22 @@
 """_summary_
 """
-import click
+import atexit
 import cProfile
 import sys
-import atexit
+
+import click
 
 from mranalyzer import corr, seg
 from mranalyzer.util import console
 
+
 @click.group()
 @click.option("--profile", is_flag=True, help="Profile the program.")
-@click.option("--profile-output", default="profile.out", help="Output file for profiling.")
+@click.option(
+    "--profile-output", default="profile.out", help="Output file for profiling."
+)
 def cli(profile: bool, profile_output: str) -> None:
-    # Profiling snippet modified from 
+    # Profiling snippet modified from
     # https://stackoverflow.com/questions/55880601/how-to-use-profiler-with-click-cli-in-python
     if profile:
         console.log("Profiling...", style="bold yellow")
@@ -22,10 +26,14 @@ def cli(profile: bool, profile_output: str) -> None:
         def exit():
             pr.disable()
             pr.dump_stats(profile_output)
-            console.log("Profiling Complete. See profile.prof using snakeviz. `snakeviz profile.prof`", style="bold yellow")
+            console.log(
+                "Profiling Complete. See profile.prof using snakeviz. `snakeviz profile.prof`",
+                style="bold yellow",
+            )
 
-        atexit.register(exit)    
+        atexit.register(exit)
     console.log("Beginning analysis...", style="bold yellow")
+
 
 # Add the subcommands
 cli.add_command(corr.corr)

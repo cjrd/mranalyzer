@@ -39,13 +39,17 @@ mra seg --help
 ## Development
 
 ### Install Development Libraries
-
-### Precommit Hooks
-To keep the code tidy and avoid oh-so-common python mistakes, we use precommit hooks. To install them, run the following:
-
-
 ```bash
+# install development libraries
+pip install -e ".[dev]"
 
+# enable pre-commit hooks
+pre-commit install
+```
+
+Note that to keep the code tidy and avoid oh-so-common python mistakes, we use precommit hooks. The pre-commit hooks will be installed using the above pip development install command. To run the pre-commit hooks, run the following command (they will also be run automatically when you commit code):
+```bash
+pre-commit run  --all-files
 ```
 
 ### Profiling

@@ -1,4 +1,3 @@
-
 import functools
 import os
 import time
@@ -6,14 +5,15 @@ from multiprocessing.pool import Pool
 
 import click
 import matplotlib.image as mpimg
+import matplotlib.pyplot as plt
 import numpy as np
 import scipy.spatial as spsp
+from matplotlib import cm
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 from scipy.ndimage import distance_transform_edt
 from skimage import feature
+
 from mranalyzer.util import TLD, console, make_dir_if_not_exist
-from mpl_toolkits.axes_grid1 import make_axes_locatable
-import matplotlib.pyplot as plt
-from matplotlib import cm
 
 
 def _sharesStdVal(xy, ptIndex, ptVals, sigmaMap, kdist):
@@ -22,6 +22,7 @@ def _sharesStdVal(xy, ptIndex, ptVals, sigmaMap, kdist):
         if ptVals[val] == sigmaMap[xy]:
             return True
     return False
+
 
 def crop_rover(image, canny, sigmaMap, xydist=50):
     """_summary_
@@ -78,7 +79,6 @@ def crop_rover_fast(image, canny, xydist=50):
     return result
 
 
-
 @click.command()
 @click.option(
     "--outimage",
@@ -87,9 +87,27 @@ def crop_rover_fast(image, canny, xydist=50):
     default="./output/image_processing_progression.png",
     help="Output file for image progression results",
 )
-@click.option("--gsigma", default=7.0, type=float, show_default=True, help="Std used for Gaussian blur prior to running Canny edge detection. Higher number results in fewer edges.")
-@click.option("--match_edges", is_flag=True, help="Segment the region where the std is quantized to the same region as any edge within --seg_npx pixels.")
-@click.option("--seg_npx", default=100, type=int, show_default=True, help="Segment the region within seg_npx pixels of any edge.")
+@click.option(
+    "--gsigma",
+    default=7.0,
+    type=float,
+    show_default=True,
+    help="Std used for Gaussian blur prior to running Canny edge detection. "
+    "Higher number results in fewer edges.",
+)
+@click.option(
+    "--match_edges",
+    is_flag=True,
+    help="Segment the region where the std is quantized to the same region as any edge "
+    "within --seg_npx pixels.",
+)
+@click.option(
+    "--seg_npx",
+    default=100,
+    type=int,
+    show_default=True,
+    help="Segment the region within seg_npx pixels of any edge.",
+)
 @click.option(
     "--input",
     "-i",
@@ -104,16 +122,17 @@ def seg(**kwargs):
     imgMean = img.mean()
     img_std = img.std()
     bins = [i * img_std for i in range(4)]
-    # zero center the image so that stds are centered around 0 and we can use abs() to determine sigma map
+    # zero center the image so that stds are centered around 0 and
+    # we can use abs() to determine sigma map
     sigmaMap = np.digitize(np.abs(img - imgMean), bins)
-    
-    edges = feature.canny(img, sigma=kwargs['gsigma'])
+
+    edges = feature.canny(img, sigma=kwargs["gsigma"])
 
     # set all "non-rover" pixels to 0
-    if kwargs['match_edges']:
-        rover = crop_rover(img, edges, sigmaMap, kwargs['seg_npx'])
+    if kwargs["match_edges"]:
+        rover = crop_rover(img, edges, sigmaMap, kwargs["seg_npx"])
     else:
-        rover = crop_rover_fast(img, edges, kwargs['seg_npx'])
+        rover = crop_rover_fast(img, edges, kwargs["seg_npx"])
 
     runtime = time.time() - startTime
     console.log("Finished analysis.")
@@ -121,18 +140,20 @@ def seg(**kwargs):
 
     # write the image progression to file
     console.log("Writing output to file.")
-    
-    make_dir_if_not_exist(os.path.dirname(kwargs['output_path']))
-    save_rover_images(img, sigmaMap, edges, rover, kwargs['output_path'], kwargs['gsigma'])
+
+    make_dir_if_not_exist(os.path.dirname(kwargs["output_path"]))
+    save_rover_images(
+        img, sigmaMap, edges, rover, kwargs["output_path"], kwargs["gsigma"]
+    )
     console.log("Done.")
-        
+
     return True
 
 
-
 def save_rover_images(img, sigmaMap, edges, rover, outname: str, sig: float):
-    """Save the rover images to disk that show the original image, the sigma map, the edges, and the rover.
-    
+    """Save the rover images to disk that show the original image,
+    the sigma map, the edges, and the rover.
+
     Args:
         img (_type_): _description_
         sigmaMap (_type_): _description_
