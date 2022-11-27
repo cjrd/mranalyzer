@@ -12,6 +12,7 @@ from matplotlib import cm
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from scipy.ndimage import distance_transform_edt
 from skimage import feature
+from skimage.color import rgb2gray
 
 from mranalyzer.util import TLD, console, make_dir_if_not_exist
 
@@ -119,13 +120,15 @@ def seg(**kwargs):
     startTime = time.time()
 
     img = mpimg.imread(kwargs["input_image"])
+    # convert to rgb if color image
+    if len(img.shape) == 3:
+        img = rgb2gray(img)
     imgMean = img.mean()
     img_std = img.std()
     bins = [i * img_std for i in range(4)]
     # zero center the image so that stds are centered around 0 and
     # we can use abs() to determine sigma map
     sigmaMap = np.digitize(np.abs(img - imgMean), bins)
-
     edges = feature.canny(img, sigma=kwargs["gsigma"])
 
     # set all "non-rover" pixels to 0

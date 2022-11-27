@@ -1,10 +1,16 @@
-"""Perform an exploratory correlation analysis of the input atmospheric data."""
+"""!
+Perform an exploratory correlation analysis of the input atmospheric data.
+
+This subpackage contains functions for performing an exploratory correlation
+analysis of the input atmospheric data. The main function for this subpackage is
+corr(), which can be called from the command line as follows: `mra corr`;
+see `mra corr --help` for more information.
+"""
 
 import os
 import sys
 import time
 from contextlib import redirect_stderr
-from typing import Any
 
 import click
 import graphviz
@@ -31,13 +37,15 @@ from mranalyzer.util import (
     default="./output",
     help="Output directory for results",
 )
+# for some reason, doxygen wants to document this option as a variable. This cond comment hides it
+##\cond # noqa: E265
 @click.option(
     "--data",
     "data_path",
     default=os.path.join(TLD, "data/7500_data.csv"),
     type=click.Path(exists=True),
     show_default=True,
-    help="input atmopheric data",
+    help="Input atmopheric data csv file, see default for example",
 )
 @click.option(
     "--labels",
@@ -45,8 +53,9 @@ from mranalyzer.util import (
     default=os.path.join(TLD, "data/7500_labels.csv"),
     type=click.Path(exists=True),
     show_default=True,
-    help="input atmopheric data labels",
+    help="Input atmopheric data labels, see default for example",
 )
+##\endcond # noqa: E265
 @click.option(
     "--min_lon",
     default=30.0,
@@ -83,7 +92,7 @@ from mranalyzer.util import (
     help="The random seed to use for the analysis",
 )
 def corr(**kwargs) -> None:
-    """
+    """!
     Perform an exploratory correlation analysis of the input atmospheric data.
 
     Run `mra corr --help` to see all input options.
@@ -161,26 +170,28 @@ def corr(**kwargs) -> None:
 def run_decision_tree(
     X: pd.DataFrame, y: pd.DataFrame, randomSeed: int = 0
 ) -> tree.DecisionTreeClassifier:
-    """_summary_
+    """!
+    Fit a decision tree to the input data and return the classifier.
 
-    Args:
-        df (pd.DataFrame): _description_
-        randomSeed (int, optional): _description_. Defaults to 0.
-
-    Returns:
-        _type_: _description_
+    @param X (pd.DataFrame): An input dataframe of covariates for the decision tree classifier.
+    @param y (pd.DataFrame): An input dataframe of labels for the decision tree classifier.
+    @param randomSeed (int, optional): Random seed for the decision tree classifier. Defaults to 0.
+    @returns (tree.DecisionTreeClassifier): A trained decision tree classifier
     """
     clf = tree.DecisionTreeClassifier(random_state=randomSeed)
     clf = clf.fit(X, y)
     return clf
 
 
-def plot_decision_tree(model: Any, featureNames: str, outdir: str):
-    """Export the decision tree to a dot file and a rendered pdf.
+def plot_decision_tree(
+    model: tree.DecisionTreeClassifier, featureNames: str, outdir: str
+) -> None:
+    r"""!
+    Export the decision tree to a dot file and a rendered pdf into \p outdir.
 
-    @args model: the decision tree model
-    @args featureNames: the names of the features
-    @args outdir: the output directory
+    @param model (DecisionTreeClassifier): the decision tree model
+    @param featureNames (str): the names of the features
+    @param outdir (str): the output directory
     """
     dot_data = tree.export_graphviz(
         model,

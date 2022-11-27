@@ -1,4 +1,7 @@
-"""Common utility functions.
+"""!
+Common utility functions and shared constants/instantiations.
+
+This module contains common utility functions used throughout the mranalyzer package.
 """
 import io
 import os
@@ -7,16 +10,19 @@ from typing import List
 import pandas as pd
 from rich.console import Console
 
-# Shared logging console object
+__all__ = ["TLD", "ErrorLogWrapper", "console", "make_dir_if_not_exist"]
+
+##! Shared logging console object # noqa: E265
 console = Console()
 
-# TLD dir
+## The top level directory of the mranalyzer package # noqa: E266
 TLD = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 
 def make_dir_if_not_exist(pth: str) -> None:
-    """Make a directory if it does not exist.
-    @param pth<str>: Path to directory to make.
+    """!
+    Make a directory if it does not exist.
+    @param pth (str): Path to directory to make.
     """
     assert os.path.isdir(pth) or not os.path.exists(
         pth
@@ -28,7 +34,7 @@ def make_dir_if_not_exist(pth: str) -> None:
 def combine_multiple_csvs_to_dataframe(
     csvPaths: List[str], sep: str = ","
 ) -> pd.DataFrame:
-    """
+    """!
     Combine multiple csvs into a single dataframe.
 
     This function is useful for combining multiple csvs into a single dataframe,
@@ -36,9 +42,9 @@ def combine_multiple_csvs_to_dataframe(
     given row in a particular csv can not be parsed, then that row is not parsed
     for all csvs, thereby keeping all csvs aligned in the output dataframe.
 
-    @param csvPaths<List[str]>: List of paths to csvs to combine.
-    @param sep<str>: Separator to use when parsing csvs.
-    @return <pd.DataFrame>: Dataframe containing all data from all csvs.
+    @param csvPaths (List[str]): List of paths to csvs to combine.
+    @param sep (str): Separator to use when parsing csvs.
+    @return (pd.DataFrame): Dataframe containing all data from all csvs.
     """
     # loop over all csvs and combine into a single dataframe
     allData = []
@@ -76,17 +82,48 @@ def combine_multiple_csvs_to_dataframe(
 
 
 class ErrorLogWrapper:
-    """Wrapper for rich.console.Console that logs errors with a colorful preamble."""
+    """!
+    Wrapper for rich.console.Console that logs errors with a colorful preamble.
 
-    preamble: str = ""
+    Here's an example use case, which will log all errors to the console with a preamble:
+    ```
+    from contextlib import redirect_stderr
+    from mranalyzer.util import console
+    with (
+        console.status("Loading data", spinner="dots")
+        and redirect_stderr(
+            ErrorLogWrapper(
+                console,
+                preamble="Data loading issue (inspect/clean your data at these lines to fix)",
+            )
+        )
+    ):
+
+    ```
+    """
+
+    ##\cond # noqa: E265
+    _preamble: str = ""
+    ##\endcond # noqa: E265
 
     def __init__(self, console: Console, preamble: str = "") -> None:
-        self.console = console
-        self.preamble = preamble
+        """!
+        Initialize the ErrorLogWrapper.
+
+        @param console (rich.console.Console): Console object to log errors to.
+        (`from rich.console import Console`)
+        @param preamble (str): Preamble to log before the error message.
+        """
+        self._console = console
+        self._preamble = preamble
 
     def write(self, msg: str):
+        """!
+        Write the error message to the console.
+        @param msg (str): Error message to log.
+        """
         if msg.strip() != "":
-            self.console.log(
-                f"[red]{self.preamble}:[/red]\n\t" + msg.replace("\n", "\n\t"),
+            self._console.log(
+                f"[red]{self._preamble}:[/red]\n\t" + msg.replace("\n", "\n\t"),
                 style="bold yellow",
             )
