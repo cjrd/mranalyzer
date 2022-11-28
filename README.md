@@ -118,6 +118,29 @@ You can use environment variables `IMGDIR` to set the directory with images to p
 ## Development
 The following section provides startup instructions for further developing MR Analyzer.
 
+### Structure
+
+```
+mranalyzer - main source code
+├── cli.py - command line interface
+├── corr.py - correlation analysis subcommand
+├── seg.py - segmentation subcommand
+├── utils.py - utility functions
+
+tests - unit tests
+├── test_utils.py - unit tests for utils.py
+
+pyproject.toml - python project configuration
+setup.cfg - setup configuration 
+
+Doxyfile - doxygen configuration file
+docs - doxygen documentation
+images - example images for segmentation
+data - example data for correlation analysis
+scripts - example scripts
+
+```
+
 ### Install Development Libraries
 ```bash
 # install development libraries
@@ -132,6 +155,13 @@ Note that to keep the code tidy and avoid oh-so-common python mistakes, we use p
 pre-commit run  --all-files
 ```
 
+### Adding a new subcommand
+Adding new subcommands should be relatively straightforward:
+1. Create a new file in the `mranalyzer` directory, e.g. `mranalyzer/new_subcommand.py`
+2. Add a line at the end of `mranalyzer/cli.py` file that adds the subcommand (follow similar examples, such as corr)
+3. Add a set of command line options for the subcommand in `mranalyzer/cli.py` (follow similar examples, such as in `mranalyzer/corr.py`)
+
+
 ### Testing
 ```bash
 # run pytest after installing the dev libraries (see above)
@@ -139,6 +169,7 @@ pytest
 
 # run pytest with html coverage output
 pytest --cov=mranalyzer --cov-report=html
+# open the html coverage report at `htmlcov/index.html`
 ```
 
 ### Profiling
@@ -147,5 +178,6 @@ pytest --cov=mranalyzer --cov-report=html
 mra --profile corr
 
 # Visualize profiling output (make sure snakeviz is installed)
+# e.g. `conda install snakeviz`
 snakeviz mra.prof
 ```

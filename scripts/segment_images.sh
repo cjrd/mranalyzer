@@ -20,7 +20,7 @@ find "${IMGDIR}" -iname '*.jpg' |\
   parallel  mra seg -i "${IMGDIR}"/{} -o "${OUTDIR}"/{} --debug=${DEBUG}
 
 # Count the positive and negative examples and report accuracy
-# TODO this assumes that the output images are in `pos` and `neg` folders
+# NOTE this analysis assumes that the output images are in `pos` and `neg` folders
 npos=$(find "${OUTDIR}/pos" -iname '*.jpg' | wc -l | xargs)
 nneg=$(find "${OUTDIR}/neg" -iname '*.jpg' | wc -l | xargs)
 npos_gt=$(find "${IMGDIR}/pos" -iname '*.jpg' | wc -l | xargs)
