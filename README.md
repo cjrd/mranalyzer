@@ -101,13 +101,18 @@ mra seg --help
 * By default, each image segmentation takes less than half a second on standard laptop. The segmentation operates by determining if a pixel is within a pixel radius of an edge pixel detected by a Canny edge detector (after applying Gaussian blur to an image). A more computationally intense version can be done by passing `--match_edges` will perform only include pixels that have a similar range of pixel values as the pixel values of the detected edges within a certain pixel radius (this radius is controlled with `--seg_npx`).
 * With `--debug=False`, images will not be output if they do not have more than `--rover_npx_thresh` edge pixels (default 100).
 
-### Batch segmentation
+### Batch segmentation / performance analysis
 [scripts/segment_images.sh](scripts/segment_images.sh) shows an example of batch processing 10 positive (rover present) and 10 negative (no rover) images. You can execute this script via 
 ```bash
 ./scripts/segment_images.sh
 ```
 
-and use environment variables `IMGDIR` to set the directory with images to process, `OUTDIR` to set the output directory and `DEBUG` to determine whether to output the segmentation sequence or only the segmented image if it exceeds a `--seg_npx` threshold.
+which shows the performance of the current default segmentation on the 20 examples (**note that segmenting all 20 images only takes about 13 seconds on my laptop**):
+
+<img width="617" alt="image" src="https://user-images.githubusercontent.com/1455579/204402722-880a8aff-f084-497b-91b6-96bccecbc9b6.png">
+
+
+You can use environment variables `IMGDIR` to set the directory with images to process, `OUTDIR` to set the output directory and `DEBUG` to determine whether to output the segmentation sequence or only the segmented image if it exceeds a `--seg_npx` threshold.
 
 ## Development
 The following section provides startup instructions for further developing MR Analyzer.
