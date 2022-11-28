@@ -1,6 +1,10 @@
-# Mars Rover Analysis Tools
-This repository contains a set of tools to perform various analysis on the data collected by the Mars Rover as well as coincident data from other remote sensing sensors.
 
+<img width="150" align="left" alt="Screen Shot 2022-11-28 at 2 36 55 PM" src="https://user-images.githubusercontent.com/1455579/204395576-056cbbd1-687a-4fd2-824f-3814b2edd413.png">
+<h1>MR Analyzer: Mars Rover Analyzer</h1>
+
+This repository contains a set of tools to perform various analysis on the data collected by the Mars Rover as well as coincident data from other remote sensing sensors. This README provides a set of install instructions and quickstart, as well as more detailed walkthroughs and instructions. Contact `colorado.j.reed AT gmail` with any direct questions, or open up a github issue with any general questions/issues.
+
+<br clear="left"/>
 
 ## Installation and Quickstart
 
