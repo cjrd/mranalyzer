@@ -62,7 +62,7 @@ mra corr
 
 This should produce an output similar to this: 
 <img width="1512" alt="image" src="https://user-images.githubusercontent.com/1455579/204397037-14d522e4-bc24-4ae8-ae80-c3dbe2f8de0e.png">
-
+```
 # see all options
 mra corr --help
 ```
@@ -112,11 +112,6 @@ This shows the performance of the current default segmentation on the 20 example
 
 <img width="617" alt="image" src="https://user-images.githubusercontent.com/1455579/204402722-880a8aff-f084-497b-91b6-96bccecbc9b6.png">
 
-```bash
-# Example segmentation
-# reads in an example image from `images/pos/rover.jpg`
-# and outputs a debugging image to `output/image_processing_progression.png`
-mra seg
 
 You can use environment variables `IMGDIR` to set the directory with images to process, `OUTDIR` to set the output directory and `DEBUG` to determine whether to output the segmentation sequence or only the segmented image if it exceeds a `--seg_npx` threshold.
 
