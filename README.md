@@ -34,6 +34,21 @@ mra seg
 mra seg --help
 ```
 
+## Correlation Analysis `mra corr`
+The `mra` correlation analysis tool can be executed with the following command:
+
+```bash
+# Example correlation analysis
+mra corr
+
+# see more options
+mra corr --help
+```
+
+
+## Rover Segmentation `mra seg`
+
+
 
 ## Development
 
