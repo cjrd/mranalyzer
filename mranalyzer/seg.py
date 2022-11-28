@@ -192,6 +192,13 @@ def save_debugging_images(
 
 @click.command()
 @click.option(
+    "--input",
+    "-i",
+    "input_image",
+    default=os.path.join(TLD, "images/pos/rover.jpg"),
+    help="Input image to process",
+)
+@click.option(
     "--output",
     "-o",
     "output_img",
@@ -234,13 +241,6 @@ def save_debugging_images(
     show_default=True,
     help="Count the rover as segmented if it has at least "
     "rover_npx_thresh edge pixels, else it's an empty image.",
-)
-@click.option(
-    "--input",
-    "-i",
-    "input_image",
-    default=os.path.join(TLD, "images/pos/rover.jpg"),
-    help="Input image to process",
 )
 def seg(**kwargs):
     """!

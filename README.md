@@ -18,37 +18,57 @@ conda activate mra
 # MIT license
 conda install --channel conda-forge pygraphviz
 
-# Install mranalyzer (in editable mode, so that you can update as desired)
+# Install mranalyzer (in editable mode, so that you can update the code and have the updates propagated)
 pip install -e .
 
+# This should install a binary called `mra`
+mra --help
+
+# Which has two key subcommands: `corr` and `seg`
+
 # Example correlation analysis
+# reads in the data from `data/7500_data.csv` and `data/7500_labels.csv`
+# and prints information about it and outputs a decision tree to `data/rover_data.pdf`
 mra corr
 
-# see more options
+# see all options
 mra corr --help
 
 # Example segmentation
+# reads in an example image from `images/pos/rover.jpg`
+# and outputs a debugging image to `output/image_processing_progression.png`
 mra seg
 
-# see more options
+# see all options
 mra seg --help
 ```
 
 ## Correlation Analysis `mra corr`
-The `mra` correlation analysis tool can be executed with the following command:
+The correlation analysis tool is used to analyze the data collected by the Mars Rover and determine which features are most important in predicting the labels. The tool uses a decision tree to determine the most important features. The tool can also be used to determine the most important features in predicting the labels for the data collected by the Mars Rover. The `mra` correlation analysis tool can be executed with the following command:
 
 ```bash
 # Example correlation analysis
+# reads in the data from `data/7500_data.csv` and `data/7500_labels.csv`
+# and prints information about it and outputs a decision tree to `data/rover_data.pdf`
 mra corr
 
-# see more options
+# see all options
 mra corr --help
 ```
 
 
 ## Rover Segmentation `mra seg`
+The rover segmentation tool is used to segment the images collected by the Mars Rover. The tool uses a combination of simple image processing techniques to segment the images into rover/background regions.
 
+```bash
+# Example segmentation
+# reads in an example image from `images/pos/rover.jpg`
+# and outputs a debugging image to `output/image_processing_progression.png`
+mra seg
 
+# see all options
+mra seg --help
+```
 
 ## Development
 
