@@ -29,6 +29,55 @@ from mranalyzer.util import (
 )
 
 
+def run_decision_tree(
+    X: pd.DataFrame, y: pd.DataFrame, randomSeed: int = 0
+) -> tree.DecisionTreeClassifier:
+    """!
+    Fit a decision tree to the input data and return the classifier.
+
+    @param X (pd.DataFrame): An input dataframe of covariates for the decision tree classifier.
+    @param y (pd.DataFrame): An input dataframe of labels for the decision tree classifier.
+    @param randomSeed (int, optional): Random seed for the decision tree classifier. Defaults to 0.
+    @returns (tree.DecisionTreeClassifier): A trained decision tree classifier
+    """
+    clf = tree.DecisionTreeClassifier(random_state=randomSeed)
+    clf = clf.fit(X, y)
+    return clf
+
+
+def plot_decision_tree(
+    model: tree.DecisionTreeClassifier, featureNames: str, outdir: str
+) -> None:
+    r"""!
+    Export the decision tree to a dot file and a rendered pdf into \p outdir.
+
+    @param model (DecisionTreeClassifier): the decision tree model
+    @param featureNames (str): the names of the features
+    @param outdir (str): the output directory
+    """
+    dot_data = tree.export_graphviz(
+        model,
+        out_file=None,
+        filled=True,
+        rounded=True,
+        special_characters=True,
+        feature_names=featureNames,
+    )
+    graph = graphviz.Source(dot_data)
+    outpath = os.path.join(outdir, "decision_tree")
+    try:
+        graph.render(outpath, overwrite_source=True)
+    except PermissionError:
+        # a strange permission error results if graphviz is installed via pip instead of conda
+        console.print(
+            "Unable to render decision tree. Did you install graphviz as follows? "
+            "`conda install --channel conda-forge pygraphviz`",
+            style="red",
+        )
+        sys.exit(1)
+    console.log(f"Writing decision tree to {outpath} and {outpath}.pdf")
+
+
 @click.command()
 @click.option(
     "--output",
@@ -165,52 +214,3 @@ def corr(**kwargs) -> None:
 
     runtime = time.time() - startTime
     console.log(f"Runtime: {runtime:.2f} seconds", style="bold yellow")
-
-
-def run_decision_tree(
-    X: pd.DataFrame, y: pd.DataFrame, randomSeed: int = 0
-) -> tree.DecisionTreeClassifier:
-    """!
-    Fit a decision tree to the input data and return the classifier.
-
-    @param X (pd.DataFrame): An input dataframe of covariates for the decision tree classifier.
-    @param y (pd.DataFrame): An input dataframe of labels for the decision tree classifier.
-    @param randomSeed (int, optional): Random seed for the decision tree classifier. Defaults to 0.
-    @returns (tree.DecisionTreeClassifier): A trained decision tree classifier
-    """
-    clf = tree.DecisionTreeClassifier(random_state=randomSeed)
-    clf = clf.fit(X, y)
-    return clf
-
-
-def plot_decision_tree(
-    model: tree.DecisionTreeClassifier, featureNames: str, outdir: str
-) -> None:
-    r"""!
-    Export the decision tree to a dot file and a rendered pdf into \p outdir.
-
-    @param model (DecisionTreeClassifier): the decision tree model
-    @param featureNames (str): the names of the features
-    @param outdir (str): the output directory
-    """
-    dot_data = tree.export_graphviz(
-        model,
-        out_file=None,
-        filled=True,
-        rounded=True,
-        special_characters=True,
-        feature_names=featureNames,
-    )
-    graph = graphviz.Source(dot_data)
-    outpath = os.path.join(outdir, "decision_tree")
-    try:
-        graph.render(outpath, overwrite_source=True)
-    except PermissionError:
-        # a strange permission error results if graphviz is installed via pip instead of conda
-        console.print(
-            "Unable to render decision tree. Did you install graphviz as follows? "
-            "`conda install --channel conda-forge pygraphviz`",
-            style="red",
-        )
-        sys.exit(1)
-    console.log(f"Writing decision tree to {outpath} and {outpath}.pdf")

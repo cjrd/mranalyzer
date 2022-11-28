@@ -28,7 +28,9 @@ def make_dir_if_not_exist(pth: str) -> None:
         pth
     ), f"Path {pth} exists but is not a directory."
     if not os.path.exists(pth):
-        os.makedirs(pth)
+        # set exist_ok=True for race conditions with multiple processes
+        # trying to make the same directory
+        os.makedirs(pth, exist_ok=True)
 
 
 def combine_multiple_csvs_to_dataframe(

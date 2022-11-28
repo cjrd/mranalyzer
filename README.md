@@ -6,7 +6,6 @@ This repository contains a set of tools to perform various analysis on the data 
 
 ```bash
 # Clone the repo -- request from colorado.j.reed@gmail.com if you do not have permission
-# by sending your github username
 git clone git@github.com:cjrd/mranalyzer.git
 cd mranalyzer
 
