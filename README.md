@@ -174,6 +174,14 @@ pytest --cov=mranalyzer --cov-report=html
 # open the html coverage report at `htmlcov/index.html`
 ```
 
+### Regenerate doxygen
+
+```
+# install doxygen e.g. `sudo apt-get install doxygen` or `brew install doxygen`
+doxygen
+```
+
+
 ### Profiling
 ```bash
 # Generate profiling output
