@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.4"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Mars Rover Analyzer (Machine Learning and Instrument Autonomy Group - JPL): Mars Rover Analysis Tools</title>
+<title>Mars Rover Analyzer (Machine Learning and Instrument Autonomy Group - JPL): Mars Rover Analyzer (Machine Learning and Instrument Autonomy Group - JPL)</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -62,12 +62,15 @@ $(function() {
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">Mars Rover Analysis Tools </div></div>
+  <div class="headertitle"><div class="title">Mars Rover Analyzer (Machine Learning and Instrument Autonomy Group - JPL) </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p ><a class="anchor" id="md_README"></a>This repository contains a set of tools to perform various analysis on the data collected by the Mars Rover as well as coincident data from other remote sensing sensors.</p>
-<h1>Installation and Quickstart</h1>
-<div class="fragment"><div class="line"># Clone the repo -- request from colorado.j.reed@gmail.com if you do not have permission</div>
+<div class="textblock"><p ><a class="anchor" id="md_README"></a><img src="https://user-images.githubusercontent.com/1455579/204395576-056cbbd1-687a-4fd2-824f-3814b2edd413.png" alt="Screen Shot 2022-11-28 at 2 36 55 PM" width="150" align="left" class="inline"/> </p><h1>MR Analyzer: Mars Rover Analyzer</h1>
+<p >This repository contains a set of tools to perform various analysis on the data collected by the Mars Rover as well as coincident data from other remote sensing sensors. This README provides a set of install instructions and quickstart, as well as more detailed walkthroughs and instructions.</p>
+<p ><br  clear="left" />
+</p>
+<h2>Installation and Quickstart</h2>
+<div class="fragment"><div class="line"># Clone the repo -- request from colorado.j.reed _at_ gmail.com if you do not have permission</div>
 <div class="line">git clone git@github.com:cjrd/mranalyzer.git</div>
 <div class="line">cd mranalyzer</div>
 <div class="line"> </div>
@@ -80,33 +83,113 @@ $(function() {
 <div class="line"># MIT license</div>
 <div class="line">conda install --channel conda-forge pygraphviz</div>
 <div class="line"> </div>
-<div class="line"># Install mranalyzer (in editable mode, so that you can update as desired)</div>
+<div class="line"># Install mranalyzer (in editable mode, so that you can update the code and have the updates propagated)</div>
 <div class="line">pip install -e .</div>
 <div class="line"> </div>
+<div class="line"># This should install a binary called `mra`</div>
+<div class="line">mra --help</div>
+<div class="line"> </div>
+<div class="line"># Which has two key subcommands: `corr` and `seg`</div>
+<div class="line"> </div>
 <div class="line"># Example correlation analysis</div>
+<div class="line"># reads in the data from `data/7500_data.csv` and `data/7500_labels.csv`</div>
+<div class="line"># and prints information about it and outputs a decision tree to `data/rover_data.pdf`</div>
 <div class="line">mra corr</div>
 <div class="line"> </div>
 <div class="line"># see more options</div>
 <div class="line">mra corr --help</div>
 <div class="line"> </div>
 <div class="line"># Example segmentation</div>
+<div class="line"># reads in an example image from `images/pos/rover.jpg`</div>
+<div class="line"># and outputs a debugging image to `output/image_processing_progression.png`</div>
 <div class="line">mra seg</div>
 <div class="line"> </div>
-<div class="line"># see more options</div>
+<div class="line"># see all options</div>
 <div class="line">mra seg --help</div>
-</div><!-- fragment --><h1>Development</h1>
-<h2>Install Development Libraries</h2>
+</div><!-- fragment --><h2>Doxygen Documentation</h2>
+<p >See the full doxygen documentation by (locally) opening <a href="docs/html/index.html">docs/html/index.html</a></p>
+<h2>Correlation Analysis <code>mra corr</code></h2>
+<p >The correlation analysis tool is used to analyze the data collected by the Mars Rover and determine which features are most important in predicting the labels. The tool uses a decision tree to determine the most important features. The tool can also be used to determine the most important features in predicting the labels for the data collected by the Mars Rover. The <code>mra</code> correlation analysis tool can be executed with the following command:</p>
+<div class="fragment"><div class="line"># Example correlation analysis</div>
+<div class="line"># reads in the data from `data/7500_data.csv` and `data/7500_labels.csv`</div>
+<div class="line"># and prints information about it and outputs a decision tree to `data/rover_data.pdf`</div>
+<div class="line">mra corr</div>
+</div><!-- fragment --><p >This should produce an output similar to this: <img src="https://user-images.githubusercontent.com/1455579/204397037-14d522e4-bc24-4ae8-ae80-c3dbe2f8de0e.png" alt="image" width="1512" class="inline"/> </p><div class="fragment"><div class="line"># see all options</div>
+<div class="line">mra corr --help</div>
+</div><!-- fragment --><p >with output similar to:</p>
+<p ><img src="https://user-images.githubusercontent.com/1455579/204397233-e1821643-628c-48bd-bc1f-fe2e77117701.png" alt="image" width="609" class="inline"/></p>
+<p >You can then visualize the decision tree that is written to file. Here, the decision tree is written to <code>./output/decision_tree.pdf</code> and looks something like this (the fill color inidicates the majority class): <img src="https://user-images.githubusercontent.com/1455579/204398674-c1cffffe-3c83-4764-a042-e906866df274.png" alt="image" width="1336" class="inline"/></p>
+<h2>Rover Segmentation <code>mra seg</code></h2>
+<p >The rover segmentation tool is used to segment the images collected by the Mars Rover. The tool uses a combination of simple image processing techniques to segment the images into rover/background regions. </p><div class="fragment"><div class="line"># Example segmentation</div>
+<div class="line"># reads in an example image from `images/pos/rover.jpg`</div>
+<div class="line"># and outputs a debugging image to `output/image_processing_progression.png`</div>
+<div class="line">mra seg</div>
+</div><!-- fragment --><p >Here's the input image:</p>
+<p ><img src="https://user-images.githubusercontent.com/1455579/204400842-fcb5f84e-a9f7-4767-8d98-75553047ae1d.png" alt="image" width="522" class="inline"/></p>
+<p >Here's the debugging output (the default), which shows the input image, a map of the standard deviation of the pixel values, the output of a Canny edge detector, and the corresponding segmentation: <img src="https://user-images.githubusercontent.com/1455579/204400962-970a4dc8-da69-44fc-bca7-ed27c3543c7a.png" alt="image" width="1136" class="inline"/></p>
+<div class="fragment"><div class="line"># see more options</div>
+<div class="line">mra seg --help</div>
+</div><!-- fragment --><p> <img src="https://user-images.githubusercontent.com/1455579/204401206-97aa5ab4-c636-447a-bcda-d14d925665f8.png" alt="image" width="512" class="inline"/></p>
+<p ><b>Tips</b></p><ul>
+<li>Pass in <code>--debug=False</code> to output only the segmented image, note that if a rover region is not detected, then no image will be output (the logs will indicate this as well)</li>
+<li>By default, each image segmentation takes less than half a second on standard laptop. The segmentation operates by determining if a pixel is within a pixel radius of an edge pixel detected by a Canny edge detector (after applying Gaussian blur to an image). A more computationally intense version can be done by passing <code>--match_edges</code> will perform only include pixels that have a similar range of pixel values as the pixel values of the detected edges within a certain pixel radius (this radius is controlled with <code>--seg_npx</code>).</li>
+<li>With <code>--debug=False</code>, images will not be output if they do not have more than <code>--rover_npx_thresh</code> edge pixels (default 100).</li>
+</ul>
+<h3>Batch segmentation / performance analysis</h3>
+<p ><a href="scripts/segment_images.sh">scripts/segment_images.sh</a> shows an example of batch processing 10 positive (rover present) and 10 negative (no rover) images. You can execute this script via </p><div class="fragment"><div class="line">./scripts/segment_images.sh</div>
+</div><!-- fragment --><p >This shows the performance of the current default segmentation on the 20 examples (<b>note that segmenting all 20 images only takes about 13 seconds on my laptop</b>):</p>
+<p ><img src="https://user-images.githubusercontent.com/1455579/204402722-880a8aff-f084-497b-91b6-96bccecbc9b6.png" alt="image" width="617" class="inline"/></p>
+<p >You can use environment variables <code>IMGDIR</code> to set the directory with images to process, <code>OUTDIR</code> to set the output directory and <code>DEBUG</code> to determine whether to output the segmentation sequence or only the segmented image if it exceeds a <code>--seg_npx</code> threshold.</p>
+<h2>Development</h2>
+<p >The following section provides startup instructions for further developing MR Analyzer.</p>
+<h3>Structure</h3>
+<div class="fragment"><div class="line">mranalyzer - main source code</div>
+<div class="line">├── cli.py - command line interface</div>
+<div class="line">├── corr.py - correlation analysis subcommand</div>
+<div class="line">├── seg.py - segmentation subcommand</div>
+<div class="line">├── utils.py - utility functions</div>
+<div class="line"> </div>
+<div class="line">tests - unit tests</div>
+<div class="line">├── test_utils.py - unit tests for utils.py</div>
+<div class="line"> </div>
+<div class="line">pyproject.toml - python project configuration</div>
+<div class="line">setup.cfg - setup configuration </div>
+<div class="line"> </div>
+<div class="line">Doxyfile - doxygen configuration file</div>
+<div class="line">docs - doxygen documentation</div>
+<div class="line">images - example images for segmentation</div>
+<div class="line">data - example data for correlation analysis</div>
+<div class="line">scripts - example scripts</div>
+</div><!-- fragment --><h3>Install Development Libraries</h3>
 <div class="fragment"><div class="line"># install development libraries</div>
 <div class="line">pip install -e &quot;.[dev]&quot;</div>
 <div class="line"> </div>
 <div class="line"># enable pre-commit hooks</div>
 <div class="line">pre-commit install</div>
 </div><!-- fragment --><p >Note that to keep the code tidy and avoid oh-so-common python mistakes, we use precommit hooks. The pre-commit hooks will be installed using the above pip development install command. To run the pre-commit hooks, run the following command (they will also be run automatically when you commit code): </p><div class="fragment"><div class="line">pre-commit run  --all-files</div>
-</div><!-- fragment --><h2>Profiling</h2>
+</div><!-- fragment --><h3>Adding a new subcommand</h3>
+<p >Adding new subcommands should be relatively straightforward:</p><ol type="1">
+<li>Create a new file in the <code>mranalyzer</code> directory, e.g. <code>mranalyzer/new_subcommand.py</code></li>
+<li>Add a line at the end of <code>mranalyzer/cli.py</code> file that adds the subcommand (follow similar examples, such as corr)</li>
+<li>Add a set of command line options for the subcommand in <code>mranalyzer/cli.py</code> (follow similar examples, such as in <code>mranalyzer/corr.py</code>)</li>
+<li>At the very least, add an integration test in <code>tests/test_end2end.py</code>, and if there is functionality that would benefit from unit tests, add those in <code>tests/test_new_subcommand.py</code></li>
+</ol>
+<h3>Testing</h3>
+<p >All tests can be run through: </p><div class="fragment"><div class="line"># run pytest after installing the dev libraries (see above)</div>
+<div class="line">pytest</div>
+<div class="line"> </div>
+<div class="line"># run pytest with html coverage output</div>
+<div class="line">pytest --cov=mranalyzer --cov-report=html</div>
+<div class="line"># open the html coverage report at `htmlcov/index.html`</div>
+</div><!-- fragment --><h3>Regenerate doxygen</h3>
+<div class="fragment"><div class="line"># install doxygen e.g. `sudo apt-get install doxygen` or `brew install doxygen`</div>
+<div class="line">doxygen</div>
+</div><!-- fragment --><h3>Profiling</h3>
 <div class="fragment"><div class="line"># Generate profiling output</div>
 <div class="line">mra --profile corr</div>
 <div class="line"> </div>
 <div class="line"># Visualize profiling output (make sure snakeviz is installed)</div>
+<div class="line"># e.g. `conda install snakeviz`</div>
 <div class="line">snakeviz mra.prof</div>
 </div><!-- fragment --> </div></div><!-- PageDoc -->
 </div><!-- contents -->
