@@ -14,6 +14,7 @@ This file includes notes on the JPL coding challenge. I've separated these notes
 * Added documenation and a `--help` option to the `mra` command.
 * Added pre-commit hooks to enforce code style and linting.
 * Added a README with installation instructions, quickstart example, and more detailed walkthroughs and instructions.
+* Made the package pip-installable and added a setup.cfg file (with a list of open source licenses used)
 * I removed the k-fold SVM analysis in the correlation analysis. Currently, it is not clear if we want to create a robust classifier or simply understand the correlations in the data. If we want a robust classifier, then it may makes sense to use all data from all lat/lons. If we want to understand the correlations, then it may make sense to use a subset of the data. I would want to understand the use case better to make a decision on this. Also, the unnamed 0/1/2 labels in the csvs are not clear to me, so I'm not sure how to interpret the results of the SVM analysis.
 
 
