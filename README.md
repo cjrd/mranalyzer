@@ -160,9 +160,11 @@ Adding new subcommands should be relatively straightforward:
 1. Create a new file in the `mranalyzer` directory, e.g. `mranalyzer/new_subcommand.py`
 2. Add a line at the end of `mranalyzer/cli.py` file that adds the subcommand (follow similar examples, such as corr)
 3. Add a set of command line options for the subcommand in `mranalyzer/cli.py` (follow similar examples, such as in `mranalyzer/corr.py`)
+4. At the very least, add an integration test in `tests/test_end2end.py`, and if there is functionality that would benefit from unit tests, add those in `tests/test_new_subcommand.py`
 
 
 ### Testing
+All tests can be run through:
 ```bash
 # run pytest after installing the dev libraries (see above)
 pytest
