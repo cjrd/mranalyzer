@@ -221,3 +221,4 @@ poetry.toml
 
 # Custom
 output
+profile.out
