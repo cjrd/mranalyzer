@@ -76,8 +76,30 @@ def test_combine_multiple_csvs_to_dataframe_empty(tempdir):
 
 def test_combine_multiple_csvs_to_dataframe_diff_cols(tempdir):
     dataPath, labelPath = setup_csv_files(tempdir)
-    # rewrite with different number of columns
-    d3 = {"x1": [30, 40, 50]}
+    # rewrite with different number of columns, should be fine
+    d3 = {"x1": [30, 40]}
+    pd.DataFrame(data=d3).to_csv(dataPath, index=False)
+    combinedDF = combine_multiple_csvs_to_dataframe([dataPath, labelPath])
+    assert combinedDF.shape == (2, 2), "Combined dataframe has incorrect shape"
+
+
+def test_combine_multiple_csvs_to_dataframe_diff_rows(tempdir):
+    dataPath, labelPath = setup_csv_files(tempdir)
+    # rewrite with different number of rows as label file
+    d3 = {"x1": [30, 40, 50], "x2": [50, 60, 70]}
     pd.DataFrame(data=d3).to_csv(dataPath, index=False)
     with pytest.raises(ValueError):
         combine_multiple_csvs_to_dataframe([dataPath, labelPath])
+
+
+def test_combine_multiple_csvs_to_dataframe_invalid_row_skipped(tempdir):
+    dataPath, labelPath = setup_csv_files(tempdir)
+    # rewrite with one malformed row, which should be skipped
+    outputStr = """x1,x2\n2,3\n4,5,6,50,60"""
+    with open(dataPath, "w") as f:
+        f.write(outputStr)
+    combinedDF = combine_multiple_csvs_to_dataframe([dataPath, labelPath])
+    assert combinedDF.shape == (1, 3), "Combined dataframe has incorrect shape"
+    assert combinedDF["x1"][0] == 2, "Combined dataframe has incorrect data"
+    assert combinedDF["x2"][0] == 3, "Combined dataframe has incorrect data"
+    assert combinedDF["labels"][0] == 10, "Combined dataframe has incorrect data"
