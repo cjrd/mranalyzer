@@ -123,7 +123,7 @@ def crop_rover_fast(image: np.ndarray, canny: np.ndarray, xydist: float = 50):
     """
     rows, cols = image.shape
     # get the distance of every point to an edge
-    dt = distance_transform_edt(~canny)
+    dt = distance_transform_edt(np.logical_not(canny))
     # only examine points within xydist of an edge
     validIdxs = dt <= xydist
     result = np.zeros((rows, cols), dtype=float)
